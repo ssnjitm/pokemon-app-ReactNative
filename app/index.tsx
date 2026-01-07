@@ -54,15 +54,18 @@ export default function Index() {
     try {
       const response =await fetch("https://pokeapi.co/api/v2/pokemon/?limit=10");
       const data = await response.json();
-
+     
     // fetching more infos about each pokemon
     //promise for multiple requests fetching 
     const detailedPokemons = await Promise.all(
       data.results.map(async (pokemon:Pokemon)=>{
        const res=await fetch(pokemon.url);
        const details =await res.json();
+       
+
+
       return {
-        name: pokemon.name,
+        name: pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1),
         image: details.sprites.front_default,//image eta xa 
         imageBack: details.sprites.back_default,
         types:details.types,
@@ -78,12 +81,18 @@ export default function Index() {
 
 
   return (
+    
+
     <ScrollView
     contentContainerStyle={{
       gap:16,
       padding:16,
     }}
     >
+      {/* <View style={styles.HomeContainer}>
+
+      </View> */}
+      {/* pokemon card section */}
       {pokemons.map((pokemon:Pokemon)=>(
      <Link 
      key={pokemon.name}
@@ -122,6 +131,7 @@ export default function Index() {
       ))}
 
     </ScrollView>
+    
   );
 }
 
@@ -138,5 +148,14 @@ const styles =StyleSheet.create({
     color:"gray",
     textAlign:"center"
   },  
+  HomeContainer:{
+    height:250,
+
+    backgroundColor:"gray",
+    padding:20,
+    borderRadius:20,
+    
+
+  }
 
 })
